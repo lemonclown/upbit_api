@@ -158,7 +158,15 @@ class UpbitApi:
             print(res.text)
             return OrderResult(res.text)
 
-        
+
+    def request_current_snapshot(self, codes:list) -> dict:
+        url = "https://api.upbit.com/v1/ticker"
+        querystring = {}
+        querystring['markets'] = ','.join(codes)
+        response = requests.request("GET", url, params=querystring)
+        return json.loads(response.text)
+
+
     def _generate_jwt_token(self, query:dict, access_key:str, secret_key:str):
         query_string = urlencode(query).encode()
         m = hashlib.sha512()
